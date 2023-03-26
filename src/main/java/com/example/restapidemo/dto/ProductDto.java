@@ -1,7 +1,7 @@
 package com.example.restapidemo.dto;
 
 public class ProductDto { //dto - data transfer object -> na strukturę jsona
-    private int id;
+    private long id;
     private String name;
     private int amount;
     private double price;
@@ -9,14 +9,14 @@ public class ProductDto { //dto - data transfer object -> na strukturę jsona
     public ProductDto() {
     }
 
-    public ProductDto(int id, String name, int amount, double price) {
+    public ProductDto(long id, String name, int amount, double price) {
         this.id = id;
         this.name = name;
         this.amount = amount;
         this.price = price;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
     public String getName() {
@@ -29,5 +29,15 @@ public class ProductDto { //dto - data transfer object -> na strukturę jsona
 
     public double getPrice() {
         return price;
+    }
+
+    @Override
+    public String toString() {
+        return "ProductDto{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", amount=" + amount +
+                ", price=" + price +
+                '}';
     }
 }

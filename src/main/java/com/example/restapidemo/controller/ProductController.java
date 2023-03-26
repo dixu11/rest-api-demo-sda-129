@@ -1,16 +1,70 @@
-package com.example.restapidemo;
+package com.example.restapidemo.controller;
 
 import com.example.restapidemo.dto.ProductDto;
+import com.example.restapidemo.service.ProductService;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 //Controller -> endpointy zwracają widoki (np. html)
 //RestController -> endpointy zwracają dane (np. json)
 public class ProductController {
+
+    private ProductService productService;
+
+    public ProductController(ProductService productService) {
+        this.productService = productService;
+    }
+
+    @GetMapping("/api/products")
+    public List<ProductDto> getAllProducts(int maxPrice) {
+        return productService.getProducts(maxPrice);
+    }
+
+    //przesyłanie danych w ścieżce wymaga @PathVariable
+    @GetMapping("/api/products/{id}")
+    public ProductDto findById(@PathVariable int id){
+        return productService.findById(id);
+    }
+
+    //przesyłanie jsona w ciele zapytania wymaga złapania go na odpowiadający obiekt + @RequestBody
+    @PostMapping("/api/products")
+    public void addProduct(@RequestBody ProductDto request) {
+        productService.addProduct(request);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //creating response practise
+
 
     @GetMapping("/product")
     //@ResponseStatus(HttpStatus.I_AM_A_TEAPOT) // jest możliwość zmiany domyślnego statusu odpowiedzi na dowolny
