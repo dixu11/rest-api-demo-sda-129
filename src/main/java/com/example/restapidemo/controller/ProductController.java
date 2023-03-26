@@ -20,9 +20,11 @@ public class ProductController {
     }
 
     @GetMapping("/api/products")
-    public List<ProductDto> getAllProducts(int maxPrice) {
+    public List<ProductDto> getAllProducts( int maxPrice) {
         return productService.getProducts(maxPrice);
     }
+
+
 
     //przesyłanie danych w ścieżce wymaga @PathVariable
     @GetMapping("/api/products/{id}")
@@ -35,6 +37,13 @@ public class ProductController {
     public void addProduct(@RequestBody ProductDto request) {
         productService.addProduct(request);
     }
+
+    @GetMapping("/header/practice")
+    public List<ProductDto> getAllProducts2(@RequestHeader(name="max") int maxPrice) {
+        return productService.getProducts(maxPrice);
+    }
+
+
 
 
 

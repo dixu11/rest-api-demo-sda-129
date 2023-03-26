@@ -36,4 +36,20 @@ public class Product {
     public int hashCode() {
         return Objects.hash(id, name, amount, price);
     }
+
+    public long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public double getPrice() {
+        return price;
+    }
 }

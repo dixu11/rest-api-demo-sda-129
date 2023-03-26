@@ -21,17 +21,31 @@ public class ProductService {
         Product product = new Product(request.getName(),request.getAmount(),request.getPrice());
         productRepository.save(product);
     }
+
+
     public ProductDto findById(long id) {
-        return findAll().stream()
+        Product product = productRepository.findById(id)
+                .orElseThrow();
+        ProductDto productDto = new ProductDto(product.getId(),product.getName()
+                ,product.getAmount(),product.getPrice());
+        return productDto;
+
+     /*   return findAll().stream()
                 .filter(p -> p.getId() == id)
                 .findFirst()
-                .orElseThrow();
+                .orElseThrow();*/
     }
 
     public List<ProductDto> getProducts(int maxPrice) {
-        return findAll().stream()
-                .filter(p -> p.getPrice()<= maxPrice)
+        return productRepository.findAllByPriceIsLessThanEqual(maxPrice)
+                .stream()
+                .map(p -> new ProductDto(p.getId(), p.getName()
+                        , p.getAmount(), p.getPrice()))
                 .toList();
+
+       /* return findAll().stream()
+                .filter(p -> p.getPrice()<= maxPrice)
+                .toList();*/
     }
 
 
