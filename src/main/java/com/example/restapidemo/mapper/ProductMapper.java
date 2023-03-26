@@ -24,7 +24,13 @@ public class ProductMapper {
 
 
     public ProductDto mapToDto(Product product) {
-        return new ProductDto(product.getId(),product.getName(),product.getAmount(),product.getPrice());
+        return ProductDto.builder()
+                .id(product.getId())
+                .name(product.getName())
+                .price(product.getPrice())
+                .amount(product.getAmount())
+                .build();
+       // return new ProductDto(product.getId(),product.getName(),product.getAmount(),product.getPrice());
     }
 
     public Product mapToEntity(ProductDto productDto) {
