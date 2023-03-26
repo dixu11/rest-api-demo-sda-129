@@ -4,6 +4,7 @@ import com.example.restapidemo.dto.ProductDto;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -25,6 +26,7 @@ public class ProductController {
         return new ResponseEntity<>(productDto, HttpStatusCode.valueOf(200));
     }
 
+    //budowanie ResponseEntity przy wykorzystaniu buildera a nie konstruktora
     @GetMapping("/product3")
     public ResponseEntity<ProductDto> getDummyProduct3(){
         ProductDto productDto = new ProductDto(2,"chleb",100,4.5);
@@ -32,9 +34,19 @@ public class ProductController {
                 .status(201)
                 .header("myCustomHeader", "value")
                 .body(productDto);
-
     }
 
+   //budowanie ResponseEntity przy wykorzystaniu dedykowanych scenariuszy
+    @GetMapping("/product4")
+    public ResponseEntity<ProductDto> getDummyProduct4() {
+        ProductDto productDto = new ProductDto(3,"masło",200,8);
+        return ResponseEntity.ok(productDto);
+    }
 
+    //zwracanie obiektu bez wykorzystania ResponseEntity
+    @GetMapping("/product5")
+    public ProductDto getDummyProduct5() {
+       return new ProductDto(3,"masło",200,8);
+    }
 
 }
