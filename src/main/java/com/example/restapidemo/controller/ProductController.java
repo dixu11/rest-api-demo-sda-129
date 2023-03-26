@@ -19,8 +19,17 @@ public class ProductController {
         this.productService = productService;
     }
 
+    //jeśli nie ma maxprice ustaw max int więc znajdzie wszystkie
+  /*  @GetMapping("/api/products")
+    public List<ProductDto> getAllProducts(@RequestParam(defaultValue = Integer.MAX_VALUE+ "") int maxPrice) {
+        return productService.getProducts(maxPrice);
+    }
+*/
     @GetMapping("/api/products")
-    public List<ProductDto> getAllProducts( int maxPrice) {
+    public List<ProductDto> getAllProducts( Integer maxPrice) {
+        if (maxPrice == null) { // null oznacza nie przekazany parametr
+            return productService.getProducts();
+        }
         return productService.getProducts(maxPrice);
     }
 

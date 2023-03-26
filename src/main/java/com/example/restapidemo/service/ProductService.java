@@ -62,7 +62,10 @@ public class ProductService {
                 .filter(p -> p.getPrice()<= maxPrice)
                 .toList();*/
     }
-
+    public List<ProductDto> getProducts() {
+        List<Product> products = productRepository.findAll();
+        return mapper.mapToDtos(products);
+    }
 
     private List<ProductDto> findAll() { //zaślepka na bazę danych i metodę findAll
         return List.of(
