@@ -2,7 +2,9 @@ package com.example.restapidemo.service;
 
 import com.example.restapidemo.dto.ProductDto;
 import com.example.restapidemo.entity.Product;
+import com.example.restapidemo.mapper.ProductMapper;
 import com.example.restapidemo.repository.ProductRepository;
+import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,13 +14,31 @@ public class ProductService {
 
 
     private ProductRepository productRepository;
+    private ProductMapper mapper;
 
-    public ProductService(ProductRepository productRepository) {
+    public ProductService(ProductRepository productRepository, ProductMapper mapper) {
         this.productRepository = productRepository;
+        this.mapper = mapper;
     }
 
-    public void addProduct(ProductDto request) {
-        Product product = new Product(request.getName(),request.getAmount(),request.getPrice());
+    @PostConstruct
+    public void createDummyData() {
+        if (productRepository.count() > 0) {
+            return;
+        }
+
+        List<ProductDto> productDtos = List.of(
+                new ProductDto(1, "mleko", 1000, 3.5),
+                new ProductDto(2, "chleb", 100, 4.5),
+                new ProductDto(3, "masło", 200, 8)
+        );
+
+        productRepository.saveAll(mapper.mapToEntities(productDtos));
+    }
+
+
+    public void addProduct(ProductDto dto) {
+        Product product = mapper.mapToEntity(dto);
         productRepository.save(product);
     }
 
@@ -26,9 +46,7 @@ public class ProductService {
     public ProductDto findById(long id) {
         Product product = productRepository.findById(id)
                 .orElseThrow();
-        ProductDto productDto = new ProductDto(product.getId(),product.getName()
-                ,product.getAmount(),product.getPrice());
-        return productDto;
+        return mapper.mapToDto(product);
 
      /*   return findAll().stream()
                 .filter(p -> p.getId() == id)
@@ -37,11 +55,9 @@ public class ProductService {
     }
 
     public List<ProductDto> getProducts(int maxPrice) {
-        return productRepository.findAllByPriceIsLessThanEqual(maxPrice)
-                .stream()
-                .map(p -> new ProductDto(p.getId(), p.getName()
-                        , p.getAmount(), p.getPrice()))
-                .toList();
+        List<Product> products = productRepository.findAllByPriceIsLessThanEqual(maxPrice);
+        return mapper.mapToDtos(products);
+
 
        /* return findAll().stream()
                 .filter(p -> p.getPrice()<= maxPrice)
